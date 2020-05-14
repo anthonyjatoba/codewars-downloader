@@ -2,17 +2,20 @@ import re
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from configparser import ConfigParser
+
+config = ConfigParser()
+config.read('config.ini')
+
+USERNAME = config.get('main', 'username')
+EMAIL = config.get('main', 'email')
+PASSWORD = config.get('main', 'password')
 
 # TODO property with user's browser/driver
 driver = webdriver.Chrome()
 
 # TODO see if user is already logged in
 driver.get('https://www.codewars.com/users/sign_in')
-
-# TODO use json config file
-USERNAME = 
-EMAIL = 
-PASSWORD = 
 
 # login
 email_input = driver.find_element_by_name('user[email]')
