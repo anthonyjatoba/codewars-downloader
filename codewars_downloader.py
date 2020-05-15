@@ -1,7 +1,9 @@
 import os
+from configparser import ConfigParser
 
 import requests
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 from challenge import Challenge
 from download_source import download_source
@@ -10,20 +12,27 @@ from parser import Parser
 CHALLENGE_URL = 'https://www.codewars.com/api/v1/code-challenges/{}'
 
 file_formats = {
-    'Python': 'py',
+    'Python': '.py',
 }
 
-if __name__ == '__main__':
+config = ConfigParser()
+config.read('config.ini')
 
-    download_source()
+directory = config.get('settings', 'directory')
+
+if __name__ == '__main__':
+   
+    # download_source()
 
     with open('challenges.html', 'r') as file:
-        soup = BeautifulSoup(file.read(), 'lxml')
-        solutions_elements = soup.findAll("div", {"class": "list-item solutions"})
+        soup = BeautifulSoup(file.read(), 'html.parser')
+        solutions_elements = soup.findAll('div', {'class': 'list-item solutions'})
 
     # dict to store the challenges
     challenges = {'%d kyu' % n: [] for n in range(1, 9)}
-    for solution_element in solutions_elements[:5]:
+    for solution_element in tqdm(solutions_elements, 'Parsing challenges'):
+        #pbar.set_description("Processing")
+
         parser = Parser(solution_element)
 
         challenge_id = parser.parse_id()
@@ -40,14 +49,14 @@ if __name__ == '__main__':
 
         challenges[challenge.kyu].append(challenge)
 
-    for key, challenge_list in challenges.items():
-        for challenge in challenge_list:
-            path = 'solutions/{}/{}'.format(key, challenge.name)
+    for kyu, challenge_list in challenges.items():
+        for challenge in tqdm(challenge_list, 'Saving {}'.format(kyu)):
+            kyu_path = os.path.join(directory, kyu, challenge.name)
 
-            os.makedirs(path, exist_ok=True)
+            os.makedirs(kyu_path, exist_ok=True)
 
-            with open(path + '/' + 'README.md', 'w') as file:
-                file.write(challenge.description)
+            with open(os.path.join(kyu_path, 'README.md'), 'w') as f:
+                f.write(challenge.description)
 
-            with open(path + '/' + challenge.name + file_formats[challenge.language], 'w') as file:
-                file.write(challenge.code)
+            with open(os.path.join(kyu_path, challenge.name + file_formats[challenge.language]), 'w') as f:
+                f.write(challenge.code)

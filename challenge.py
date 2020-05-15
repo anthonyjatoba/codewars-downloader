@@ -13,8 +13,12 @@ class Challenge:
 
     @classmethod
     def fromjson(cls, json):
+
+        def sanitize(text):
+            return text.strip().replace('/', '')
+
         id_ = json['id']
-        name = json['name']
+        name = sanitize(json['name'])
         kyu = json['rank']['name']
         url = json['url']
 

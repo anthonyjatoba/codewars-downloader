@@ -1,2 +1,3 @@
-# codewars-downloader
+# Codewars Downloader
+
 A downloader for codewars kata solutions

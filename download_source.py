@@ -6,11 +6,12 @@ from configparser import ConfigParser
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
+from tqdm import tqdm
 
 config = ConfigParser()
 config.read('config.ini')
 
-USERNAME = config.get('codewars', 'username')
+username = config.get('codewars', 'username')
 email = config.get('codewars', 'email')
 password = config.get('codewars', 'password')
 
@@ -18,7 +19,7 @@ browser = config.get('settings', 'browser')
 scroll_delay = int(config.get('settings', 'scroll_delay'))
 
 SIGNIN_URL = 'https://www.codewars.com/users/sign_in'
-SOLUTIONS_URL = 'https://www.codewars.com/users/{}/completed_solutions'.format(USERNAME)
+SOLUTIONS_URL = 'https://www.codewars.com/users/{}/completed_solutions'.format(username)
 
 drivers = {
     'chrome': webdriver.Chrome,
@@ -56,9 +57,9 @@ def download_source():
     times_scroll = completed_challenges // 15
 
     # scrolling the page to get all challenges
-    for i in range(times_scroll):
+    for i in tqdm(range(times_scroll), 'Fetching challenges'):
         driver.execute_script(
-            "window.scrollTo(0, document.body.scrollHeight);")
+            'window.scrollTo(0, document.body.scrollHeight);')
         time.sleep(scroll_delay)
 
     with open('./challenges.html', 'w') as file:
