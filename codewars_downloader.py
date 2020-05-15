@@ -21,8 +21,8 @@ config.read('config.ini')
 directory = config.get('settings', 'directory')
 
 if __name__ == '__main__':
-   
-    # download_source()
+
+    download_source()
 
     with open('challenges.html', 'r') as file:
         soup = BeautifulSoup(file.read(), 'html.parser')
@@ -31,8 +31,6 @@ if __name__ == '__main__':
     # dict to store the challenges
     challenges = {'%d kyu' % n: [] for n in range(1, 9)}
     for solution_element in tqdm(solutions_elements, 'Parsing challenges'):
-        #pbar.set_description("Processing")
-
         parser = Parser(solution_element)
 
         challenge_id = parser.parse_id()

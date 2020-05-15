@@ -13,7 +13,6 @@ class Challenge:
 
     @classmethod
     def fromjson(cls, json):
-
         def sanitize(text):
             return text.strip().replace('/', '')
 
