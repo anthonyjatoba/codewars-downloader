@@ -1,3 +1,4 @@
+import csv
 import os
 from configparser import ConfigParser
 
@@ -11,14 +12,14 @@ from parser import Parser
 
 CHALLENGE_URL = 'https://www.codewars.com/api/v1/code-challenges/{}'
 
-file_formats = {
-    'Python': '.py',
-}
-
 config = ConfigParser()
 config.read('config.ini')
 
 directory = config.get('settings', 'directory')
+
+with open('programming_languages.csv', newline='') as csvfile:
+    reader = csv.DictReader(csvfile)
+    file_formats = {row['Language']: row['Extension'] for row in reader}
 
 if __name__ == '__main__':
 
