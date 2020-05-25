@@ -1,3 +1,4 @@
+import csv
 import os
 from configparser import ConfigParser
 
@@ -6,23 +7,23 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 from challenge import Challenge
-from download_source import download_source
 from parser import Parser
-
-CHALLENGE_URL = 'https://www.codewars.com/api/v1/code-challenges/{}'
-
-file_formats = {
-    'Python': '.py',
-}
 
 config = ConfigParser()
 config.read('config.ini')
 
 directory = config.get('settings', 'directory')
 
+# reads the file extension csv
+with open('programming_languages.csv', newline='') as csvfile:
+    reader = csv.DictReader(csvfile)
+    file_formats = {row['Language']: row['Extension'] for row in reader}
+
+CHALLENGE_URL = 'https://www.codewars.com/api/v1/code-challenges/{}'
+
 if __name__ == '__main__':
 
-    download_source()
+    # download_source()
 
     with open('challenges.html', 'r') as file:
         soup = BeautifulSoup(file.read(), 'html.parser')
