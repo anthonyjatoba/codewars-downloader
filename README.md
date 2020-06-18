@@ -2,7 +2,7 @@
 
 A downloader for Codewars kata solutions.
 
-![Files](files.png)
+![Files](docs/files.png)
 
 ## How to use
 
@@ -26,7 +26,7 @@ Currently, we support **Chrome** and **Firefox**.
 
 ### Configuration
 
-All configuration is performed through the [config.ini](config.ini) file. See below how to set up
+All configuration is performed through the [config.ini](settings/config.ini) file. See below how to set up
 
 ```
 [codewars]
