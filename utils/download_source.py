@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from tqdm import tqdm
 
 config = ConfigParser()
-config.read('config.ini')
+config.read('settings/config.ini')
 
 username = config.get('codewars', 'username')
 email = config.get('codewars', 'email')
