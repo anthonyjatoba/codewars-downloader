@@ -31,6 +31,8 @@ if __name__ == '__main__':
 
     # dict to store the challenges
     challenges = {'%d kyu' % n: [] for n in range(1, 9)}
+    challenges['unrated'] = []
+
     for solution_element in tqdm(solutions_elements, 'Parsing challenges'):
         parser = Parser(solution_element)
 
@@ -42,6 +44,8 @@ if __name__ == '__main__':
 
         # creating a challenge object
         challenge = Challenge.fromjson(js)
+        if challenge.kyu == None:
+            challenge.kyu = 'unrated'
 
         challenge.code = parser.parse_code()
         challenge.language = parser.parse_language()
