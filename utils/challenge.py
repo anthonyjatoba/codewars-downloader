@@ -19,6 +19,8 @@ class Challenge:
         id_ = json['id']
         name = sanitize(json['name'])
         kyu = json['rank']['name']
+        if challenge.kyu == None:
+            challenge.kyu = 'unrated'
         url = json['url']
 
         description_header = '# [{}]({})'.format(name, url)
